@@ -1,5 +1,4 @@
-from django.db.models import Prefetch
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 from django.shortcuts import render, get_object_or_404
