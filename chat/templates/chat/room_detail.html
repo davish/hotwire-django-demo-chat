@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Room Detail</title>
+</head>
+<body>
+<h1>{{ room.name }}</h1>
+<ul>
+    {% for message in room.messages.all %}
+        {% include "chat/message.html" with message=message only %}
+    {% endfor %}
+</ul>
+<a href="{% url 'send' room.id %}">Send a new message</a>
+</body>
+</html>
