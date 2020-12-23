@@ -14,7 +14,7 @@
 <body>
 <h1>{{ room.name }}</h1>
 <turbo-frame id="messages">
-     <ul>
+     <ul id="message-list">
         {% for message in room.messages.all %}
             {% include "chat/message.html" with message=message only %}
         {% endfor %}

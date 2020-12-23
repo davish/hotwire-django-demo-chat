@@ -25,5 +25,7 @@ class MessageCreate(CreateView):
     def form_valid(self, form):
         room = get_object_or_404(Room, pk=self.kwargs["pk"])
         form.instance.room = room
-        return super().form_valid(form)
+        super().form_valid(form)
+        return render(self.request, 'chat/message_update.html', {"message": form.instance}, content_type='text/html; turbo-stream;')
+
 
