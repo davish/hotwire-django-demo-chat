@@ -3,61 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Room Detail</title>
-    <script src="https://unpkg.com/@hotwired/turbo@7.0.0-beta.1/dist/turbo.es5-umd.js"></script>
     <style>
         textarea {
             width: 200px;
             height: 2rem;
         }
     </style>
-    <script>
-    const socket = new WebSocket("ws://localhost:8000/ws/")
-
-    class TurboChannelsStreamSource extends HTMLElement {
-        async connectedCallback() {
-          console.log("hi! Connecting!")
-          Turbo.connectStreamSource(this)
-          console.log(this.subscription)
-          await setTimeout(() => socket.send(JSON.stringify(this.subscription)), 200)
-          socket.onmessage = ev => {
-            const data = JSON.parse(ev.data).data
-            console.log(data)
-            this.dispatchMessageEvent(data)
-          }
-          window.sendUpdate = (msg) => this.dispatchMessageEvent(`
-            <turbo-stream action="append" target="message-list">
-              <template>
-                <li>${msg}</li>
-              </template>
-            </turbo-stream>
-          `)
-        }
-
-        disconnectedCallback() {
-          console.log("hello! disconnecting!")
-          Turbo.disconnectStreamSource(this)
-            {#if (this.subscription) this.subscription.unsubscribe()#}
-        }
-
-        dispatchMessageEvent(data) {
-            const event = new MessageEvent("message", { data })
-            return this.dispatchEvent(event)
-        }
-
-        get subscription() {
-          const model = this.getAttribute("model")
-          const stream = this.getAttribute("stream")
-          const value = this.getAttribute("value")
-          return { model, stream, value }
-        }
-    }
-
-    customElements.define("turbo-channels-stream-source", TurboChannelsStreamSource)
-    </script>
+    {% include "turbo/head.html" %}
 </head>
 <body>
 <h1>{{ room.name }}</h1>
-<turbo-channels-stream-source model="chat.message" stream="room_id" value="{{ room.id }}">
+<turbo-channels-stream-source model="chat.Message" stream="room_id" value="{{ room.id }}">
 </turbo-channels-stream-source>
 <turbo-frame id="messages-frame">
      <ul id="messages">

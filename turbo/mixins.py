@@ -1,4 +1,3 @@
-from django.db import models
 from asgiref.sync import async_to_sync
 
 from channels.layers import get_channel_layer
@@ -7,12 +6,19 @@ from turbo import get_broadcast_channel
 
 
 class BroadcastableMixin(object):
+
+    def get_streams(self):
+        streams = ["pk"]
+        for field in self._meta.get_fields():
+            if field.get_internal_type() == 'ForeignKey':
+                streams.append(field.get_attname())
+        return streams
+
     def save(self, *args, **kwargs):
         channel_layer = get_channel_layer()
         action = "CREATE" if self._state.adding else "UPDATE"
-        print("SAVING...")
         super().save(*args, **kwargs)
-        for stream in self.streams:
+        for stream in self.get_streams():
             if hasattr(self, stream):
                 channel = get_broadcast_channel(self._meta.label.lower(), stream, getattr(self, stream))
                 print(f"SENDING ON {channel}")
@@ -24,6 +30,5 @@ class BroadcastableMixin(object):
                         "pk": self.pk,
                         "stream": stream,
                         "action": action,
-                        "target-singular": self._meta.verbose_name.lower(),
-                        "target-plural": self._meta.verbose_name_plural.lower()
+                        "channel": channel,
                     })
