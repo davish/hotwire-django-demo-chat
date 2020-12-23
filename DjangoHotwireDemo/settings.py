@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 
     'chat.apps.ChatConfig',
+    'turbo.apps.TurboConfig',
 ]
 
 MIDDLEWARE = [
@@ -69,8 +71,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'DjangoHotwireDemo.wsgi.application'
-
+# WSGI_APPLICATION = 'DjangoHotwireDemo.wsgi.application'
+ASGI_APPLICATION = 'DjangoHotwireDemo.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -120,3 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
