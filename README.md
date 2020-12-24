@@ -1,3 +1,6 @@
+This demo now lives in [hotwire-django/turbo-django](https://github.com/hotwire-django/turbo-django/tree/main/experiments/chat)! All updates will happen over there.
+
+----
 # Django Hotwire Demo
 
 This repository contains a demonstration of [Hotwire](https://hotwire.dev), specifically the three components of
