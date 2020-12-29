@@ -8,6 +8,10 @@ from turbo import get_broadcast_channel
 class BroadcastableMixin(object):
 
     def get_streams(self):
+        """
+        Allow subscribing to streams for objects by their primary key (single updates),
+        or any ForeignKey present on the model.
+        """
         streams = ["pk"]
         for field in self._meta.get_fields():
             if field.get_internal_type() == 'ForeignKey':

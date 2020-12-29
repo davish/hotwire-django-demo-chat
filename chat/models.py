@@ -9,5 +9,6 @@ class Room(models.Model):
 class Message(BroadcastableMixin, models.Model):
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     text = models.TextField()
+    confirm = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
 
